@@ -1,0 +1,22 @@
+{
+  "app_title": "To Do ",
+  "add_new_task": "Add new Task",
+  "enter_title": "Enter Task Title",
+  "enter_details": "Enter Task Details",
+  "select_date": "Select Date",
+  "add": "Add",
+  "delete": "Delete",
+  "date": "Date",
+  "edit_task": "Edit Task",
+  "task_title": "Task Title ",
+  "task_details": "Task Details",
+  "save_changes": "Save Changes",
+  "task_list": "Task List",
+  "settings": "Settings",
+  "english": "English",
+  "arabic": "Arabic",
+  "light": "Light",
+  "dark": "Dark",
+  "theme": "Theme",
+  "language": "Language"
+}

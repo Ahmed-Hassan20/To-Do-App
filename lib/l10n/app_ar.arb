@@ -1,0 +1,23 @@
+{
+  "app_title": "المهام",
+  "task_list": "قائمة المهام",
+  "add_new_task": "أضِف مهمة",
+  "enter_title": "أدخِل عنوان المهمة",
+  "enter_details": "أدخِل تفاصيل المهمة",
+  "select_date": "اختر التاريخ",
+  "add": "أضِف",
+  "delete": "احذف",
+  "date": "التاريخ",
+  "edit_task": "عدِل المهمة",
+  "task_title": "عنوان المهمة ",
+  "task_details": "تفاصيل المهمة",
+  "save_changes": "حفظ التغييرات",
+  "settings": "الاعدادات",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "light": "مضيء",
+  "dark": "مظلم",
+  "theme": "النمط",
+  "language": "اللغة"
+
+}
