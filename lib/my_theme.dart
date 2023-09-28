@@ -16,35 +16,38 @@ class mytheme {
       appBarTheme: AppBarTheme(
           backgroundColor: mytheme.primarycolor,
           elevation: 0,
-
           iconTheme: IconThemeData(color: black)),
       textTheme: TextTheme(
         titleLarge:
-        TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: white),
+            TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: white),
         titleMedium:
-        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: black),
+            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: black),
         titleSmall:
-        TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),
-      ),elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(primarycolor) )),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: primarycolor),
-      bottomSheetTheme: BottomSheetThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight:  Radius.circular(20)
-      ))),
+            TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(primarycolor))),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: primarycolor),
+      bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20)))),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.transparent,elevation: 0,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           selectedItemColor: primarycolor,
           showUnselectedLabels: false,
           selectedIconTheme: IconThemeData(size: 30)));
 
-
   static ThemeData darkTheme = ThemeData(
     primaryColor: primarycolor,
-    scaffoldBackgroundColor:bgdark,
+    scaffoldBackgroundColor: bgdark,
     appBarTheme: AppBarTheme(
       backgroundColor: mytheme.primarycolor,
       elevation: 0,
-
       iconTheme: IconThemeData(
         color: white,
       ),
@@ -65,18 +68,23 @@ class mytheme {
         fontWeight: FontWeight.w400,
         color: grey,
       ),
-    ),elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(primarycolor) )),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: primarycolor),
-    bottomSheetTheme: BottomSheetThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight:  Radius.circular(20)
-    ))),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: darkblack,
-      selectedItemColor: primarycolor,
-      unselectedItemColor: grey,
-      showUnselectedLabels: false,
-        selectedIconTheme: IconThemeData(size: 30)
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(primarycolor))),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: primarycolor),
+    bottomSheetTheme: BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)))),
+    bottomAppBarTheme: BottomAppBarTheme(color: darkblack),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        selectedItemColor: primarycolor,
+        unselectedItemColor: grey,
+        showUnselectedLabels: false,
+        selectedIconTheme: IconThemeData(size: 30)),
   );
 }

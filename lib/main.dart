@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/HomeScreen.dart';
 import 'package:todo/TaskList/TaskEdit.dart';
@@ -6,9 +8,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/providers/app_config_provider.dart';
 
-void main() {
-  runApp(ChangeNotifierProvider(create: (context)=>appConfigProvider(),
-      child: MyApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseFirestore.instance.disableNetwork();
+  FirebaseFirestore.instance.settings =
+      Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  runApp(ChangeNotifierProvider(
+      create: (context) => appConfigProvider(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,18 +25,17 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        initialRoute: homescreen.routename,
-        routes: {
-        homescreen.routename : (context)=> homescreen(),
-         taskedit.routename : (context)=> taskedit()
-        },
+      initialRoute: homescreen.routename,
+      routes: {
+        homescreen.routename: (context) => homescreen(),
+        taskedit.routename: (context) => taskedit()
+      },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale:Locale(provider.appLanguage),
-        theme: mytheme.lighttheme,
+      locale: Locale(provider.appLanguage),
+      theme: mytheme.lighttheme,
       darkTheme: mytheme.darkTheme,
       themeMode: provider.appTheme,
-
     );
   }
 }

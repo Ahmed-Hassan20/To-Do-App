@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/my_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../providers/app_config_provider.dart';
 
 class taskedit extends StatefulWidget {
@@ -60,7 +59,8 @@ class _taskeditState extends State<taskedit> {
                         hintStyle: TextStyle(
                             color: provider.isDarkMode()
                                 ? mytheme.white
-                                : mytheme.black),border: UnderlineInputBorder(),
+                                : mytheme.black),
+                        border: UnderlineInputBorder(),
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey))),
                   ),
@@ -70,7 +70,8 @@ class _taskeditState extends State<taskedit> {
                         hintStyle: TextStyle(
                             color: provider.isDarkMode()
                                 ? mytheme.white
-                                : mytheme.black),border: UnderlineInputBorder(),
+                                : mytheme.black),
+                        border: UnderlineInputBorder(),
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey))),
                     maxLines: 4,
@@ -111,11 +112,12 @@ class _taskeditState extends State<taskedit> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.save_changes,
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: provider.isDarkMode()
-                                ? mytheme.white
-                                : mytheme.white,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: provider.isDarkMode()
+                                        ? mytheme.white
+                                        : mytheme.white,
+                                  ),
                         )),
                   )
                 ],
