@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/firebase_utils/firebase_utils.dart';
 import 'package:todo/my_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo/providers/auth_provider.dart';
+import '../model/task.dart';
 import '../providers/app_config_provider.dart';
 
 class taskedit extends StatefulWidget {
@@ -11,8 +14,12 @@ class taskedit extends StatefulWidget {
 }
 
 class _taskeditState extends State<taskedit> {
+  var titleController = TextEditingController();
+  var descController = TextEditingController();
+  // var dateController = TextEditingController() as DateTime;
   DateTime selectedDate = DateTime.now();
   var formkey = GlobalKey<FormState>();
+  late task Task;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<appConfigProvider>(context);
@@ -54,6 +61,7 @@ class _taskeditState extends State<taskedit> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
+                    controller: titleController,
                     decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.task_title,
                         hintStyle: TextStyle(
@@ -65,6 +73,7 @@ class _taskeditState extends State<taskedit> {
                             borderSide: BorderSide(color: Colors.grey))),
                   ),
                   TextFormField(
+                    controller: descController,
                     decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.task_details,
                         hintStyle: TextStyle(
@@ -108,7 +117,17 @@ class _taskeditState extends State<taskedit> {
                     padding: const EdgeInsets.all(12),
                     child: ElevatedButton(
                         onPressed: () {
-                          addtask();
+                        Task=task(title: titleController.text, description: descController.text, dateTime: selectedDate);
+                        var authprovider = Provider.of<AuthProvider>(context, listen: false);
+
+                        firebaseutils.updatetaskedit(Task,authprovider.currentUser!.id!).timeout(
+                              Duration(milliseconds: 500), onTimeout: () {
+                            print(Task.id);
+                            print(Task.isDone);
+                            Task.title = titleController.text;
+                            Task.description = descController.text;
+                             // Task.dateTime=dateController;
+                          });
                         },
                         child: Text(
                           AppLocalizations.of(context)!.save_changes,
@@ -141,7 +160,5 @@ class _taskeditState extends State<taskedit> {
     setState(() {});
   }
 
-  void addtask() {
-    if (formkey.currentState?.validate() == true) {}
-  }
+
 }

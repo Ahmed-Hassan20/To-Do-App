@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/dialog_utils.dart';
 import 'package:todo/firebase_utils/firebase_utils.dart';
 import 'package:todo/model/task.dart';
 import 'package:todo/my_theme.dart';
 
 import '../providers/app_config_provider.dart';
+import '../providers/auth_provider.dart';
 
 class addtaskbottomsheet extends StatefulWidget {
   const addtaskbottomsheet({super.key});
@@ -136,15 +138,20 @@ class _addtaskbottomsheetState extends State<addtaskbottomsheet> {
     setState(() {});
   }
 
-  void addtask() {
+  void addtask() async {
     if (formkey.currentState?.validate() == true) {
       task Task =
           task(title: title, description: description, dateTime: selectedDate);
-      firebaseutils.addtasktofirebase(Task).timeout(Duration(milliseconds: 500),
-          onTimeout: () {
-        print('passed**********');
-
-        listprovider.getAlltasksFromForestore();
+      var authprovider = Provider.of<AuthProvider>(context, listen: false);
+dialogUtils.showLoading(context, 'Loading...');
+      await firebaseutils
+          .addtasktofirebase(Task, authprovider.currentUser!.id!)
+          .then((value) {
+            dialogUtils.hideLoading(context);
+        dialogUtils.showMessage(context, 'ToDo added succeussfully',
+            posActionName: 'Ok',isDismissible: true);
+      }).timeout(Duration(milliseconds: 500), onTimeout: () {
+        listprovider.getAlltasksFromForestore(authprovider.currentUser!.id!);
         Navigator.pop(context);
       });
     }

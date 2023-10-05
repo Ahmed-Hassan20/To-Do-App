@@ -7,6 +7,7 @@ import 'package:todo/TaskList/task_widget.dart';
 import 'package:todo/firebase_utils/firebase_utils.dart';
 import 'package:todo/model/task.dart';
 import 'package:todo/my_theme.dart';
+import 'package:todo/providers/auth_provider.dart';
 
 import '../providers/app_config_provider.dart';
 
@@ -16,27 +17,31 @@ class tasklist extends StatefulWidget {
 }
 
 class _tasklistState extends State<tasklist> {
-  List<task> tasklist=[];
+  List<task> tasklist = [];
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<appConfigProvider>(context);
+    var authprovider = Provider.of<AuthProvider>(context, listen: false);
 
-    if(provider.tasklist.isEmpty){provider.getAlltasksFromForestore();}
-
+    if (provider.tasklist.isEmpty) {
+      provider.getAlltasksFromForestore(authprovider.currentUser!.id!);
+    }
 
     return Column(
       children: [
         CalendarTimeline(
-          initialDate: DateTime.now(),
+          initialDate: provider.selectedDate,
           firstDate: DateTime.now().subtract(Duration(days: 365)),
           lastDate: DateTime.now().add(Duration(days: 365)),
-          onDateSelected: (date) => print(date),
-          leftMargin: 20,
-          monthColor: mytheme.white,
-          dayColor: mytheme.white,
+          onDateSelected: (date) {
+            // provider.setNewSelDate(date);
+          },
+          leftMargin: 40,
+          monthColor: provider.isDarkMode() ? mytheme.white : mytheme.black,
+          dayColor: provider.isDarkMode() ? mytheme.white : mytheme.black,
           activeDayColor: provider.isDarkMode() ? mytheme.white : mytheme.black,
           activeBackgroundDayColor: Theme.of(context).primaryColor,
-          dotsColor: mytheme.white,
+          dotsColor: provider.isDarkMode() ? mytheme.white : mytheme.black,
           selectableDayPredicate: (date) => true,
           locale: 'en_ISO',
         ),
@@ -47,7 +52,9 @@ class _tasklistState extends State<tasklist> {
                   onTap: () {
                     Navigator.of(context).pushNamed(taskedit.routename);
                   },
-                  child: taskwidget(Task: provider.tasklist[index],));
+                  child: taskwidget(
+                    Task: provider.tasklist[index],
+                  ));
             },
             itemCount: provider.tasklist.length,
           ),
@@ -55,6 +62,4 @@ class _tasklistState extends State<tasklist> {
       ],
     );
   }
-
-
 }

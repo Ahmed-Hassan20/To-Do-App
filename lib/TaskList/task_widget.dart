@@ -5,8 +5,8 @@ import 'package:todo/model/task.dart';
 import 'package:todo/my_theme.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../providers/app_config_provider.dart';
+import '../providers/auth_provider.dart';
 
 class taskwidget extends StatelessWidget {
   task Task;
@@ -14,7 +14,6 @@ class taskwidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<appConfigProvider>(context);
-   var listprovider = Provider.of<appConfigProvider>(context);
     return Container(
       margin: EdgeInsets.all(12),
       child: Slidable(
@@ -25,12 +24,14 @@ class taskwidget extends StatelessWidget {
             SlidableAction(
               borderRadius: BorderRadius.circular(15),
               onPressed: (context) {
+                var authprovider = Provider.of<AuthProvider>(context, listen: false);
+
                 firebaseutils
-                    .deletetaskfromfirebase(Task)
+                    .deletetaskfromfirebase(Task,authprovider.currentUser!.id!)
                     .timeout(Duration(milliseconds: 500),
                     onTimeout: () {
                       print('deleted********');
-                      listprovider.getAlltasksFromForestore();
+                      provider.getAlltasksFromForestore(authprovider.currentUser!.id!);
 
                     }
                 );
@@ -52,7 +53,7 @@ class taskwidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                color: mytheme.primarycolor,
+                color: provider.isDone(Task)?mytheme.green:mytheme.primarycolor,
                 height: 80,
                 width: 4,
               ),
@@ -67,7 +68,11 @@ class taskwidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       Task.title ?? '',
-                      style: Theme.of(context)
+                      style: provider.isDone(Task)?
+                      Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .copyWith(color: mytheme.green):Theme.of(context)
                           .textTheme
                           .titleSmall!
                           .copyWith(color: mytheme.primarycolor),
@@ -76,16 +81,40 @@ class taskwidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(Task.description ?? '',
-                        style: Theme.of(context).textTheme.titleSmall),
+                        style: provider.isDone(Task)?
+                        Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: mytheme.green):Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: mytheme.primarycolor)),
                   ),
                 ],
               )),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: mytheme.primarycolor),
-                child: Icon(Icons.check, size: 40, color: Colors.white),
+              InkWell(
+                onTap: (){
+                  print(Task.id);
+                  print(Task.isDone);
+                  var authprovider = Provider.of<AuthProvider>(context, listen: false);
+
+                  firebaseutils.updatetaskDone(Task,authprovider.currentUser!.id!).timeout(Duration(milliseconds: 500),
+                      onTimeout: () {
+                        print(Task.id);
+                        print(Task.isDone);
+                      });
+
+                },
+                child:
+                provider.isDone(Task)?Text('Done!',style:Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: mytheme.green,)):
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: mytheme.primarycolor),
+                  child: Icon(Icons.check, size: 40, color: Colors.white),
+                ),
               ),
             ],
           ),
