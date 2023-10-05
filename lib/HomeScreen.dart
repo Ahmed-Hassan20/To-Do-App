@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/LoginScreen/LoginScreen.dart';
 import 'package:todo/Settings/settings.dart';
 import 'package:todo/TaskList/TaskList.dart';
 import 'package:todo/TaskList/addtaskbottomsheet.dart';
@@ -7,6 +8,7 @@ import 'package:todo/bottom_nav_item.dart';
 import 'package:todo/my_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo/providers/app_config_provider.dart';
+import 'package:todo/providers/auth_provider.dart';
 
 class homescreen extends StatefulWidget {
 static const String routename="homescreen";
@@ -21,16 +23,22 @@ int selectedindex=0;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<appConfigProvider>(context);
+    var authprovider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
 appBar: AppBar(
-  title:Text(AppLocalizations.of(context)!.app_title,style: Theme.of(context).textTheme.titleMedium!.copyWith(
+  title:Text('${AppLocalizations.of(context)!.app_title} ${authprovider.currentUser?.name}',style: Theme.of(context).textTheme.titleMedium!.copyWith(
     color: provider.isDarkMode() ?
     mytheme.black
         :
     mytheme.white),
 
-)),
+),
+actions: [IconButton(onPressed: (){
+  provider.tasklist=[];
+  authprovider.currentUser=null;
+  Navigator.pushNamed(context,loginScreen.routename);
+}, icon: Icon(Icons.logout))],),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 6,
